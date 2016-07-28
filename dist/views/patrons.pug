@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Patrons
+  p
+    a.button(href="/library/patrons/new") Create New Patron
+  table
+    thead
+      tr
+        th Name
+        th Address
+        th Email
+        th Library ID
+        th Zip
+    each patron in patrons
+      include partials/patron

@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1 Books
+  p
+    a.button(href="/library/books/new") Create New Book
+  p Filters
+    a(href="/library/books")  All
+    span  |
+    a(href="/library/books?status=overdue")  Overdue
+    span  |
+    a(href="/library/books?status=checked_out")  Checked Out
+  table
+    thead
+      tr
+        th Title
+        th Author
+        th Genre
+        th Year Released
+    each book in books
+      include partials/book

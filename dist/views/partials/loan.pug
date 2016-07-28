@@ -1,0 +1,19 @@
+tr
+  td
+    if loan.Book
+      a(href="/library/books/" + loan.Book.id) #{loan.Book.title}
+    else
+      a(href="/library/books/" + book.id) #{book.title}
+  td
+    if loan.Patron
+      a(href="/library/patrons/" + loan.Patron.id) #{loan.Patron.first_name}
+    if patron
+      a(href="/library/patrons/" + patron.id) #{patron.first_name}
+  td #{loan.loaned_on}
+  td #{loan.return_by}
+  td
+    if loan.returned_on
+      #{loan.returned_on}
+  td
+    if !loan.returned_on
+      a.button(href="return_book.html") Return Book
