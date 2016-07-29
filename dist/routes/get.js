@@ -37,6 +37,10 @@ router.get('/books', function (req, res, next) {
   }).catch((0, _dataerror2.default)(res));
 });
 
+router.get('/books/new', function (req, res, next) {
+  return res.render('new_book', { book: Book.build() });
+});
+
 router.get('/books/:id', function (req, res, next) {
   if (req.params.id == 'new') {
     return next();
@@ -47,13 +51,10 @@ router.get('/books/:id', function (req, res, next) {
   }).catch((0, _dataerror2.default)(res));
 });
 
-router.get('/books/new', function (req, res, next) {
-  return res.render('new_book');
-});
-
 router.get('/loans', function (req, res, next) {
   var obj = {};
-  obj = req.query.status == 'overdue' ? { return_by: { $gt: new Date() } } : obj;
+  var current = new Date();
+  obj = req.query.status == 'overdue' ? { return_by: { $lt: current } } : obj;
   obj = req.query.status == 'checked_out' ? { returned_on: { $eq: null } } : obj;
   Loan.findAll({ where: obj, include: [{ model: Book }, { model: Patron }] }).then(function (loans) {
     return res.render('loans', { loans: loans });
@@ -63,11 +64,13 @@ router.get('/loans', function (req, res, next) {
 router.get('/loans/new', function (req, res, next) {
   Book.findAll().then(function (books) {
     Patron.findAll().then(function (patrons) {
-      var current = new Date();
-      var loaned_on = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
-      var weekFromNow = new Date(current.setDate(current.getDate() + 7));
-      var return_by = weekFromNow.getFullYear() + '-' + (weekFromNow.getMonth() + 1) + '-' + weekFromNow.getDate();
-      return res.render('new_loan', { loaned_on: loaned_on, return_by: return_by, books: books, patrons: patrons });
+      var newLoan = Loan.build();
+      console.log(newLoan);
+      //var current = new Date();
+      //var loaned_on = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}`;
+      //var weekFromNow = new Date(current.setDate(current.getDate() + 7));
+      //var return_by = `${weekFromNow.getFullYear()}-${weekFromNow.getMonth() + 1}-${weekFromNow.getDate()}`;
+      return res.render('new_loan', { loan: newLoan, books: books, patrons: patrons });
     });
   });
 });
@@ -79,10 +82,13 @@ router.get('/patrons', function (req, res, next) {
 });
 
 router.get('/patrons/new', function (req, res, next) {
-  return res.render('new_patron');
+  return res.render('new_patron', { patron: Patron.build() });
 });
 
 router.get('/patrons/:id', function (req, res, next) {
+  if (req.params.id == 'new') {
+    return next();
+  }
   var patronInfo = [{ model: Loan, include: [{ model: Book }] }];
   Patron.findOne({ where: { id: req.params.id }, include: patronInfo }).then(function (patron) {
     console.log(patron.Loans);
