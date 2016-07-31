@@ -2,6 +2,8 @@ extends layout
 
 block content
   h1 Patrons
+  if errors
+    include partials/val_errors
   p
     a.button(href="/library/patrons/new") Create New Patron
   table
@@ -12,5 +14,6 @@ block content
         th Email
         th Library ID
         th Zip
-    each patron in patrons
-      include partials/patron
+    if patrons
+      each patron in patrons
+        include partials/patron

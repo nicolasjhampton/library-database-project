@@ -3,6 +3,8 @@ extend layout
 block content
   h1 Book: #{book.title}
   form(method="POST", action="/library/books/" + book.id + "?_method=PUT")
+    if errors
+      include partials/val_errors
     p
       label(for="title") Title
       input#title(type="text", value=book.title, name="title")

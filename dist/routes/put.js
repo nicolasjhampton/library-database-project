@@ -24,26 +24,31 @@ var Book = _models2.default.Book;
 var Loan = _models2.default.Loan;
 var Patron = _models2.default.Patron;
 
-router.post('/books/:id', function (req, res, next) {
+router.put('/books/:id', function (req, res, next) {
   Book.findById(req.params.id).then(function (book) {
     return book.update(req.body);
   }).then(function (book) {
-    res.redirect('/library/books/' + book.id);
-  }).catch((0, _dataerror2.default)(res));
+    return res.redirect('/library/books/' + book.id);
+  }).catch((0, _dataerror2.default)(req, res, next, 'book_detail'));
 });
 
-router.post('/patrons/:id', function (req, res, next) {
+router.put('/patrons/:id', function (req, res, next) {
   Patron.findById(req.params.id).then(function (patron) {
     return patron.update(req.body);
   }).then(function (patron) {
-    res.redirect('/library/patrons/' + patron.id);
-  }).catch((0, _dataerror2.default)(res));
+    return res.redirect('/library/patrons/' + patron.id);
+  }).catch((0, _dataerror2.default)(req, res, next, 'patron_detail'));
 });
 
-// router.put('/loans/:id', (req, res, next) => {
-//   Loan.findOne(req.body).then((loan) => {
-//     res.redirect(`/library/patrons/${loan.patron_id}`);
-//   });
-// });
+router.put('/loans', function (req, res, next) {
+  var whereObj = { book_id: req.query.book_id, patron_id: req.query.patron_id };
+  var orderObj = [['loaned_on', 'DESC']];
+  var queryObj = { where: whereObj, order: orderObj };
+  Loan.findOne(queryObj).then(function (loan) {
+    return loan.update(req.body);
+  }).then(function (loan) {
+    res.redirect('/library/loans');
+  }).catch((0, _dataerror2.default)(req, res, next, 'loans'));
+});
 
 exports.default = router;

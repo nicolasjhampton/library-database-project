@@ -3,6 +3,8 @@ extends layout
 block content
   h1 New Book
   form(method="POST", action="/library/books")
+    if errors
+      include partials/val_errors
     p
       label(for="title") Title:
       input#title(type="text", value=book.title, name="title")

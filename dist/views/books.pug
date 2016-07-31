@@ -2,6 +2,8 @@ extends layout
 
 block content
   h1 Books
+  if errors
+    include partials/val_errors
   p
     a.button(href="/library/books/new") Create New Book
   p Filters
@@ -17,5 +19,6 @@ block content
         th Author
         th Genre
         th Year Released
-    each book in books
-      include partials/book
+    if books
+      each book in books
+        include partials/book

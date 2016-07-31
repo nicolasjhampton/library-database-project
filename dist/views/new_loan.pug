@@ -3,6 +3,8 @@ extend layout
 block content
   h1 New Loan
   form(method="POST", action="/library/loans")
+    if errors
+      include partials/val_errors
     p
       label(for="book_id") Book
       select#book_id(value=loan.book_id, name="book_id")

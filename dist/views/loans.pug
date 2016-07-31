@@ -2,6 +2,8 @@ extends layout
 
 block content
   h1 Loans
+  if errors
+    include partials/val_errors
   p
     a.button(href="/library/loans/new") Create New Loan
   p Filters
@@ -19,5 +21,6 @@ block content
         th Return by
         th Returned on
         th Action
-    each loan in loans
-      include partials/loan
+    if loans
+      each loan in loans
+        include partials/loan

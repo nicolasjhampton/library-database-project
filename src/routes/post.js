@@ -13,22 +13,25 @@ var Patron = db.Patron;
 router.post('/books', (req, res, next) => {
   if(req.params._method == 'PUT') { return next(); }
   Book.create(req.body).then((book) => {
-    res.redirect(`/library/books/${book.id}`);
-  });
+    return res.redirect(`/library/books/${book.id}`);
+  })
+  .catch(dataError(req, res, next, 'new_book'));
 });
 
 router.post('/patrons', (req, res, next) => {
   if(req.params._method == 'PUT') { return next(); }
   Patron.create(req.body).then((patron) => {
-    res.redirect(`/library/patrons/${patron.id}`);
-  }).catch(dataError(res));
+    return res.redirect(`/library/patrons/${patron.id}`);
+  })
+  .catch(dataError(req, res, next, 'new_patron'));
 });
 
 router.post('/loans', (req, res, next) => {
   if(req.params._method == 'PUT') { return next(); }
   Loan.create(req.body).then((loan) => {
-    res.redirect(`/library/patrons/${loan.patron_id}`);
-  });
+    return res.redirect(`/library/patrons/${loan.patron_id}`);
+  })
+  .catch(dataError(req, res, next, 'loans'));
 });
 
 export default router;

@@ -16,4 +16,4 @@ tr
       #{loan.returned_on}
   td
     if !loan.returned_on
-      a.button(href="return_book.html") Return Book
+      a.button(href="/library/loans?book_id=" + loan.book_id + "&patron_id=" + loan.patron_id) Return Book

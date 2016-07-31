@@ -29,8 +29,8 @@ router.post('/books', function (req, res, next) {
     return next();
   }
   Book.create(req.body).then(function (book) {
-    res.redirect('/library/books/' + book.id);
-  });
+    return res.redirect('/library/books/' + book.id);
+  }).catch((0, _dataerror2.default)(req, res, next, 'new_book'));
 });
 
 router.post('/patrons', function (req, res, next) {
@@ -38,8 +38,8 @@ router.post('/patrons', function (req, res, next) {
     return next();
   }
   Patron.create(req.body).then(function (patron) {
-    res.redirect('/library/patrons/' + patron.id);
-  }).catch((0, _dataerror2.default)(res));
+    return res.redirect('/library/patrons/' + patron.id);
+  }).catch((0, _dataerror2.default)(req, res, next, 'new_patron'));
 });
 
 router.post('/loans', function (req, res, next) {
@@ -47,8 +47,8 @@ router.post('/loans', function (req, res, next) {
     return next();
   }
   Loan.create(req.body).then(function (loan) {
-    res.redirect('/library/patrons/' + loan.patron_id);
-  });
+    return res.redirect('/library/patrons/' + loan.patron_id);
+  }).catch((0, _dataerror2.default)(req, res, next, 'loans'));
 });
 
 exports.default = router;

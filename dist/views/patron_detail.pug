@@ -3,6 +3,8 @@ extend layout
 block content
   h1 Patron: #{patron.first_name} #{patron.last_name}
   form(method="POST", action="/library/patrons/" + patron.id + "?_method=PUT")
+    if errors
+      include partials/val_errors
     p
       label(for="first_name") First Name
       input#first_name(type="text", value=patron.first_name, name="first_name")

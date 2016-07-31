@@ -16,11 +16,64 @@ function oneWeek() {
 
 module.exports = function(sequelize, DataTypes) {
   var Loan = sequelize.define('Loan', {
-    book_id: DataTypes.INTEGER,
-    patron_id: DataTypes.INTEGER,
-    loaned_on: { type: DataTypes.DATEONLY, defaultValue: now },
-    return_by: { type: DataTypes.DATEONLY, defaultValue: oneWeek },
-    returned_on: DataTypes.DATE
+    book_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isNumeric: {
+          msg: 'Book id must be numeric.'
+        },
+        notEmpty: {
+          msg: 'A book id has not been entered.'
+        }
+      }
+    },
+    patron_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isNumeric: {
+          msg: 'Patron id must be numeric.'
+        },
+        notEmpty: {
+          msg: 'A patron id has not been entered.'
+        }
+      }
+    },
+    loaned_on: {
+      type: DataTypes.DATEONLY,
+      defaultValue: now,
+      validate: {
+        isDate: {
+          msg: 'Please enter a valid date for a "loaned on" value.'
+        },
+        notEmpty: {
+          msg: 'A "loaned on" date has not been entered.'
+        }
+      }
+    },
+    return_by: {
+      type: DataTypes.DATEONLY,
+      defaultValue: oneWeek,
+      validate: {
+        isDate: {
+          msg: 'Please enter a valid date for a "return by" value.'
+        },
+        notEmpty: {
+          msg: 'A "return by" date has not been entered.'
+        }
+      }
+    },
+    returned_on: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+      validate: {
+        isDate: {
+          msg: 'Please enter a valid date for a "returned on" value.'
+        },
+        notEmpty: {
+          msg: 'A "returned on" date has not been entered.'
+        }
+      }
+    }
   }, {
     classMethods: {
       associate: function(models) {
